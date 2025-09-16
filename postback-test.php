@@ -39,13 +39,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'created_by' => 'manual_test_tool'
                 ];
                 
-                $clickId = $clickModel->create(1, $transactionId, 'manual', 'test', null, null, $meta, 'manual');
+                // Find a valid offer ID to use for synthetic click creation
+                $offerId = null;
+                $stmt = $pdo->query("SELECT id FROM offers ORDER BY id ASC LIMIT 1");
+                if ($stmt) {
+                    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+                    if ($row && isset($row['id'])) {
+                        $offerId = (int)$row['id'];
+                    }
+                }
                 
-                if ($clickId) {
-                    $existingClick = $clickModel->findById($clickId);
-                    error_log("Auto-created synthetic click for manual postback test: click_id={$clickId}, transaction_id={$transactionId}");
+                if ($offerId) {
+                    $clickId = $clickModel->create($offerId, $transactionId, 'manual', 'test', null, null, $meta, 'manual');
+                    
+                    if ($clickId) {
+                        $existingClick = $clickModel->findById($clickId);
+                        error_log("Auto-created synthetic click for manual postback test: click_id={$clickId}, transaction_id={$transactionId}, offer_id={$offerId}");
+                    } else {
+                        $error = 'Failed to create synthetic click for testing';
+                    }
                 } else {
-                    $error = 'Failed to create synthetic click for testing';
+                    $error = 'No offers found in the database. Please create an offer before running manual postback tests.';
                 }
             }
             
