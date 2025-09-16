@@ -9,14 +9,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $step == 2) {
     $username = $_POST['username'] ?? 'root';
     $password = $_POST['password'] ?? '';
     
-    try {
-        // Test connection
-        $pdo = new PDO("mysql:host={$host};charset=utf8mb4", $username, $password);
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        
-        // Create database if it doesn't exist
-        $pdo->exec("CREATE DATABASE IF NOT EXISTS `{$database}` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
-        $pdo->exec("USE `{$database}`");
+    // Validate database name: only allow alphanumeric and underscores
+    if (!preg_match('/^[A-Za-z0-9_]+$/', $database)) {
+        $error = 'Invalid database name. Only letters, numbers, and underscores are allowed.';
+    } else {
+        try {
+            // Test connection
+            $pdo = new PDO("mysql:host={$host};charset=utf8mb4", $username, $password);
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            
+            // Create database if it doesn't exist
+            $pdo->exec("CREATE DATABASE IF NOT EXISTS `{$database}` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
+            $pdo->exec("USE `{$database}`");
         
         // Read and execute schema
         $schema = file_get_contents(__DIR__ . '/schema.sql');
