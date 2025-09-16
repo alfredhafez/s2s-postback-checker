@@ -9,13 +9,13 @@ class ClickModel {
     /**
      * Create a new click record with proper PDO binding to fix HY093 error
      */
-    public function create($offerId, $sub1 = null, $sub2 = null, $sub3 = null, $sub4 = null, $sub5 = null, $meta = [], $source = 'click') {
+    public function create($offerId, $transactionId = null, $sub1 = null, $sub2 = null, $sub3 = null, $sub4 = null, $sub5 = null, $meta = [], $source = 'click') {
         try {
             // Use positional placeholders to avoid HY093 Invalid parameter number
             $sql = "INSERT INTO clicks (offer_id, transaction_id, sub1, sub2, sub3, sub4, sub5, meta, source, created_at) 
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())";
             
-            $transactionId = $sub1 ?: $this->generateTransactionId();
+            $transactionId = $transactionId ?: $this->generateTransactionId();
             
             // Ensure meta is properly JSON encoded and never directly interpolated
             $metaJson = json_encode($meta, JSON_UNESCAPED_UNICODE);
