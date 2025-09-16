@@ -18,8 +18,8 @@ if (!$offerId) {
 
 // Check if sub1 contains the literal placeholder {transaction_id} or is empty
 if (empty($sub1) || $sub1 === '{transaction_id}') {
-    // Generate a UUID for testing when placeholder is literal or empty
-    $sub1 = 'test_' . uniqid() . '_' . bin2hex(random_bytes(4));
+    // Generate a transaction ID using ClickModel when placeholder is literal or empty
+    $sub1 = $clickModel->generateTransactionId();
     error_log("Generated test transaction ID for click.php: {$sub1}");
 }
 
