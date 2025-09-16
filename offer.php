@@ -45,7 +45,7 @@ if ($transactionId && !$clickId) {
             'access_method' => 'direct-offer'
         ];
         
-        $clickId = $clickModel->create($offerId, $transactionId, null, null, null, null, $meta, 'direct-offer');
+        $clickId = $clickModel->create($offerId, null, null, null, null, $transactionId, $meta, 'direct-offer');
         
         if ($clickId) {
             $click = $clickModel->findById($clickId);
