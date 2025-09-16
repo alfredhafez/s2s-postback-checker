@@ -1,0 +1,33 @@
+# Configuration files
+includes/config.php
+
+# Logs
+*.log
+error_log
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Temporary files
+/tmp/
+*.tmp
+
+# Backup files
+*.bak
+*.backup
+
+# Cache
+cache/
+*.cache
