@@ -27,7 +27,7 @@ function firePostback($pdo, $clickId, $data, $customTemplate = null) {
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_MAXREDIRS => 5,
             CURLOPT_USERAGENT => 'S2S-Postback-Checker/1.0',
-            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_SSL_VERIFYPEER => true,
         ]);
         
         $response = curl_exec($ch);
